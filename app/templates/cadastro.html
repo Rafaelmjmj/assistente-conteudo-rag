@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4">
+
+                <h3 class="text-center mb-4">Criar Conta</h3>
+
+                {% if erro %}
+                <div class="alert alert-danger">{{ erro }}</div>
+                {% endif %}
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" name="nome" class="form-control" placeholder="Digite seu nome" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Matrícula</label>
+                        <input type="text" name="matricula" class="form-control" placeholder="Digite sua matrícula" pattern="\d+" inputmode="numeric" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Senha</label>
+                        <input type="password" name="senha" class="form-control" placeholder="Crie uma senha" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de usuário</label>
+                        <select name="tipo" class="form-select" required>
+                            <option value="aluno">Aluno</option>
+                            <option value="professor">Professor</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Cadastrar</button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-3">
+                    <small>
+                        Já possui conta?
+                        <a href="{{ url_for('main.login') }}">Fazer login</a>
+                    </small>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

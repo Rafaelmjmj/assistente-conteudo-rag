@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Resumo com IA{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <div class="card p-5">
+
+        <div class="text-center mb-5">
+            <h2 class="mb-2">Resumo de Estudos com IA</h2>
+            <p class="text-muted">Selecione uma disciplina e a IA criará um resumo personalizado para você estudar</p>
+        </div>
+
+        {% if disciplinas %}
+
+        <form method="POST">
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Disciplina</label>
+                <select name="disciplina_id" class="form-select form-select-lg" required>
+                    <option value="" disabled {% if not disciplina_selecionada %}selected{% endif %}>
+                        Selecione uma disciplina...
+                    </option>
+                    {% for d in disciplinas %}
+                    <option value="{{ d.id }}"
+                        {% if disciplina_selecionada and disciplina_selecionada.id == d.id %}selected{% endif %}>
+                        {{ d.nome }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-5">Gerar Resumo</button>
+            </div>
+        </form>
+
+        {% if resumo %}
+        <hr class="my-5">
+        <div>
+            <h4 class="mb-4">Resumo: {{ disciplina_selecionada.nome }}</h4>
+            <div id="resumo-content" class="border rounded p-4 bg-light" style="line-height: 1.8;"></div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="alert alert-warning text-center">
+            Você ainda não está matriculado em nenhuma disciplina.
+            <a href="{{ url_for('main.listar_disciplinas') }}" class="alert-link">Ver disciplinas disponíveis</a>
+        </div>
+        {% endif %}
+
+        <div class="text-center mt-5">
+            <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary px-4">Voltar</a>
+        </div>
+
+    </div>
+</div>
+
+{% if resumo %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    document.getElementById("resumo-content").innerHTML = marked.parse({{ resumo | tojson }});
+</script>
+{% endif %}
+
+{% endblock %}

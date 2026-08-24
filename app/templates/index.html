@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    {% if session.get("tipo") == "professor" %}
+    <div class="col-md-4 mb-4">
+        <div class="card p-4 text-center">
+            <h4>Cadastrar Disciplina</h4>
+            <a href="{{ url_for('main.cadastrar_disciplina') }}" class="btn btn-primary mt-3">Cadastrar</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="col-md-4 mb-4">
+        <div class="card p-4 text-center">
+            <h4>Lista de Disciplinas</h4>
+            <a href="{{ url_for('main.listar_disciplinas') }}" class="btn btn-primary mt-3">Ver Lista</a>
+        </div>
+    </div>
+
+    {% if session.get("tipo") == "aluno" %}
+    <div class="col-md-4 mb-4">
+        <div class="card p-4 text-center">
+            <h4>Resumo com IA</h4>
+            <p class="text-muted small">Gere um resumo de estudos para suas disciplinas</p>
+            <a href="{{ url_for('main.disciplinas_ia') }}" class="btn btn-primary mt-2">Acessar</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if session.get("tipo") == "aluno" %}
+    <div class="col-md-4 mb-4">
+        <div class="card p-4 text-center">
+            <h4>Minhas Disciplinas</h4>
+            <a href="{{ url_for('main.minhas_disciplinas') }}" class="btn btn-primary mt-3">Ver</a>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

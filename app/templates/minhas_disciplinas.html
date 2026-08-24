@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Minhas Disciplinas{% endblock %}
+
+{% block content %}
+<div class="col-md-10">
+    <div class="card p-4">
+        <h3 class="mb-4 text-center">Minhas Disciplinas</h3>
+
+        {% if disciplinas %}
+            <div class="row">
+                {% for disciplina in disciplinas %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 p-3 shadow-sm">
+                        <h4 class="mb-2">{{ disciplina.nome }}</h4>
+
+                        <p class="mb-2">
+                            <strong>Carga Horária:</strong> {{ disciplina.carga_horaria }}h
+                        </p>
+
+                        <p class="text-muted">
+                            {{ disciplina.ementa[:120] }}{% if disciplina.ementa|length > 120 %}...{% endif %}
+                        </p>
+
+                        <div class="mt-auto d-flex flex-column gap-2">
+                            <a href="{{ url_for('main.visualizar_disciplina', id=disciplina.id) }}"
+                               class="btn btn-primary w-100">
+                                Acessar Disciplina
+                            </a>
+                            <form method="POST" action="{{ url_for('main.desmatricular', id=disciplina.id) }}">
+                                <button type="submit" class="btn btn-outline-danger w-100">Desmatricular</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <p class="text-muted">Você ainda não está matriculado em nenhuma disciplina.</p>
+                <a href="{{ url_for('main.listar_disciplinas') }}" class="btn btn-primary mt-2">Ver Disciplinas Disponíveis</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

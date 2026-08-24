@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}{{ disciplina.nome }}{% endblock %}
+
+{% block content %}
+<div class="col-md-10">
+    <div class="card p-5">
+
+        <!-- Cabeçalho -->
+        <div class="text-center mb-5">
+            <h2 class="mb-2">{{ disciplina.nome }}</h2>
+            <p class="text-muted mb-0">Ambiente da disciplina</p>
+        </div>
+
+        <!-- Informações rápidas -->
+        <div class="row mb-4 text-center">
+            <div class="col-md-6 mb-3">
+                <h6 class="text-muted">Carga Horária</h6>
+                <p class="fs-5 fw-semibold">{{ disciplina.carga_horaria }} horas</p>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <h6 class="text-muted">Arquivo do Plano</h6>
+                {% if disciplina.arquivo_pdf %}
+                    <p class="fs-6 fw-semibold">{{ disciplina.arquivo_pdf }}</p>
+                {% else %}
+                    <p class="text-muted">Nenhum arquivo enviado</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Ementa -->
+        <section class="mb-5">
+            <h4 class="mb-3">Ementa</h4>
+            <p style="white-space: pre-line; line-height: 1.8;">
+                {{ disciplina.ementa }}
+            </p>
+        </section>
+
+        <hr class="my-4">
+
+        <!-- Plano de ensino -->
+        <section class="mb-5">
+            <h4 class="mb-3">Plano de Ensino</h4>
+
+            {% if disciplina.plano_texto %}
+                <div class="border rounded p-4 bg-light" style="max-height: 400px; overflow-y: auto;">
+                    <pre style="white-space: pre-wrap; font-family: inherit; margin: 0; line-height: 1.7;">
+{{ disciplina.plano_texto }}
+                    </pre>
+                </div>
+            {% else %}
+                <p class="text-muted">Nenhum conteúdo extraído do PDF foi encontrado.</p>
+            {% endif %}
+        </section>
+
+        <hr class="my-4">
+
+        <!-- Assistente virtual -->
+        <section class="mb-4">
+    <h4 class="mb-3">Assistente Virtual da Disciplina</h4>
+
+    {% if not matriculado %}
+    <div class="alert alert-warning text-center">
+        Você precisa estar matriculado nesta disciplina para usar o assistente virtual.
+        <a href="{{ url_for('main.listar_disciplinas') }}" class="alert-link">Ir para matrículas</a>
+    </div>
+    {% else %}
+
+    <!-- CHAT -->
+    <div class="border rounded p-3 mb-3" style="height: 400px; overflow-y: auto; background: #f9fafb;">
+
+        {% if chat %}
+            {% for msg in chat %}
+
+                <!-- Pergunta -->
+                <div class="text-end mb-2">
+                    <div class="d-inline-block p-3 rounded" style="background: #2e7d32; color: white; max-width: 70%;">
+                        {{ msg.pergunta }}
+                    </div>
+                </div>
+
+                <!-- Resposta -->
+                <div class="text-start mb-3">
+                    <div class="d-inline-block p-3 rounded border bg-white" style="max-width: 70%;">
+                        <div style="white-space: pre-line;">
+                            {{ msg.resposta | safe }}
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <p class="text-muted text-center mt-4">
+                Nenhuma pergunta feita ainda. Comece a conversa 👇
+            </p>
+        {% endif %}
+
+    </div>
+
+    <!-- FORM -->
+    <form method="POST" action="{{ url_for('main.perguntar_disciplina', id=disciplina.id) }}">
+        <div class="input-group">
+            <input
+                type="text"
+                name="pergunta"
+                class="form-control"
+                placeholder="Digite sua pergunta..."
+                required
+            >
+            <button class="btn btn-primary" type="submit">Enviar</button>
+        </div>
+    </form>
+
+    <!-- Botão limpar -->
+    <div class="text-end mt-2">
+        <a href="{{ url_for('main.limpar_chat', id=disciplina.id) }}" class="text-danger small">
+            Limpar conversa
+        </a>
+    </div>
+
+    {% endif %}
+
+</section>
+
+        <!-- Botão voltar -->
+        <div class="text-center mt-4">
+            <a href="{{ url_for('main.listar_disciplinas') }}" class="btn btn-primary px-4">
+                Voltar para Disciplinas
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Disciplinas Disponíveis{% endblock %}
+
+{% block content %}
+<div class="col-md-10">
+    <div class="card p-4">
+        <h3 class="mb-4 text-center">Disciplinas Disponíveis</h3>
+
+        {% if disciplinas %}
+            <div class="row">
+                {% for disciplina in disciplinas %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 p-3 shadow-sm">
+                        <h4 class="mb-2">{{ disciplina.nome }}</h4>
+
+                        <p class="mb-2">
+                            <strong>Carga Horária:</strong> {{ disciplina.carga_horaria }}h
+                        </p>
+
+                        <p class="text-muted">
+                            {{ disciplina.ementa[:120] }}{% if disciplina.ementa|length > 120 %}...{% endif %}
+                        </p>
+
+                        <div class="mt-auto d-flex flex-column gap-2">
+                            <a href="{{ url_for('main.visualizar_disciplina', id=disciplina.id) }}"
+                               class="btn btn-primary w-100">
+                                Acessar Disciplina
+                            </a>
+
+                            {% if session.get("tipo") == "aluno" %}
+                                {% if disciplina.id in matriculadas_ids %}
+                                <form method="POST" action="{{ url_for('main.desmatricular', id=disciplina.id) }}">
+                                    <button type="submit" class="btn btn-outline-danger w-100">Desmatricular</button>
+                                </form>
+                                {% else %}
+                                <form method="POST" action="{{ url_for('main.matricular', id=disciplina.id) }}">
+                                    <button type="submit" class="btn btn-outline-success w-100">Matricular</button>
+                                </form>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if session.get("tipo") == "professor" %}
+                            <a href="{{ url_for('main.editar_disciplina', id=disciplina.id) }}"
+                               class="btn btn-outline-primary w-100">Editar Disciplina</a>
+                            <form method="POST" action="{{ url_for('main.excluir_disciplina', id=disciplina.id) }}"
+                                  onsubmit="return confirm('Tem certeza que deseja excluir a disciplina {{ disciplina.nome }}?')">
+                                <button type="submit" class="btn btn-danger w-100">Excluir Disciplina</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <p class="text-muted">Nenhuma disciplina cadastrada até o momento.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

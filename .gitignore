@@ -1,0 +1,57 @@
+# Variáveis de ambiente e credenciais (NUNCA versionar)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Ambientes virtuais
+venv/
+.venv/
+env/
+ENV/
+
+# Flask
+instance/
+*.sqlite
+*.sqlite3
+*.db
+uploads/
+
+# Distribuição / build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Cache e testes
+.pytest_cache/
+.cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Jupyter (se usar notebooks)
+.ipynb_checkpoints/
