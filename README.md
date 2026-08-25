@@ -5,7 +5,8 @@ Aplicação web que ajuda estudantes do curso de **Análise e Desenvolvimento de
 > Trabalho de Conclusão de Curso (TCC) do Tecnólogo em Análise e Desenvolvimento de Sistemas, Instituto Federal de Goiás (IFG), Campus Formosa. Projeto entregue de ponta a ponta, apresentado e aprovado pela banca, com homologação concluída.
 
 ![Menu_Aluno](docs/Menu_Aluno.jpeg)
-
+![Chat_Bot](docs/Area_Disciplina_ChatBot.jpeg)
+![resposta_1°apergunta](docs/Resposta_1°aPergunta.jpeg)
 ---
 
 ## Sobre o projeto
